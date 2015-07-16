@@ -22,7 +22,7 @@ class MyHTMLParserCountry(HTMLParser):
                     if "#" == tmp_tuple:
                         pass
                     else:
-                        self.dump.append(tuples[1])
+                        self.dump.append("http://www.ratebeer.com" + tuples[1])
         for tuples in attrs:
             if "brewerTable" in tuples:
                 # print("Encountered a start tag:", tag, attrs)
