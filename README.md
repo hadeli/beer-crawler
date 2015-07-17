@@ -3,14 +3,15 @@
 Crawler pour RateBeer
 # Versions
 ## 1.0
-* Permet de parcourir la liste des brasseries pour un pays donnée.
-* Permet de récupérer diverses informations pour une brasserie donnée.
+* Permet de parcourir la liste des brasseries pour un pays donnÃ©e.
+* Permet de rÃ©cupÃ©rer diverses informations pour une brasserie donnÃ©e.
     * Nom
     * Adresse
-    * Téléphone
+    * TÃ©lÃ©phone
     * Site web
     * Twitter
     * Facebook
+
 ### 1.0.1
-* Ajout de l'adresse mail dans la récupération d'informations sur une brasserie
+* Ajout de l'adresse mail dans la rÃ©cupÃ©ration d'informations sur une brasserie
 
