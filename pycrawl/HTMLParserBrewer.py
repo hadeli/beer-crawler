@@ -67,18 +67,17 @@ class MyHTMLParserBrewer(HTMLParser):
             if tag_link in data:
                 self.__data = tag_link
 
-
-words = ""
 json_file_out = open('brewer.json', 'w')
 json_file_in = open("breweries-fr.json")
 breweries_list = json.loads(json_file_in.read())
 breweries_infos = []
-brewers_per_file = 10
+brewers_per_file = 50
 i = 0
 n = len(breweries_list)
 for brewer in breweries_list:
     # print(brewer)
     microbrewery = False
+    words = ""
     for word in urllib.request.urlopen(brewer).readlines():
         str_tmp = word.strip()
         str_tmp_decoded = str_tmp.decode(sys.stdout.encoding, 'replace')  # utf-8 works in your case
@@ -98,7 +97,6 @@ for brewer in breweries_list:
         json_file_out.write(json.dumps(breweries_infos, separators=(",\n ", ": "), indent=2, ensure_ascii=False))
         print("Ecriture du fichier")
         breweries_infos = []
-    words = ""
 
 json_file_out = open('brewer' + str(int(i / brewers_per_file + 1)) + '.json', 'w')
 json_file_out.write(json.dumps(breweries_infos, separators=(",\n ", ": "), indent=2))
