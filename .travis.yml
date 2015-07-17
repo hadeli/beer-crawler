@@ -3,6 +3,6 @@ python:
   - "3.4"
 install:
   - cd pycrawl
-scrpit:
+script:
   - python HTMLParserCountry.py
   - python HTMLParserBrewer.py
