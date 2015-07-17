@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 
 __author__ = 'Eliesse HADJEM'
 
@@ -74,7 +75,7 @@ for brewer in breweries_list:
     microbrewery = False
     for word in urllib.request.urlopen(brewer).readlines():
         str_tmp = word.strip()
-        str_tmp_decoded = str_tmp.decode('utf8', 'ignore')  # utf-8 works in your case
+        str_tmp_decoded = str_tmp.decode(sys.stdout.encoding, 'replace')  # utf-8 works in your case
         if str_tmp_decoded.find("Microbrewery") > -1:
             microbrewery = True
         words += str_tmp_decoded
@@ -88,11 +89,11 @@ for brewer in breweries_list:
     if i > 1 and i % brewers_per_file == 0:
         num_file = i / brewers_per_file
         json_file_out = open('brewer' + str(int(num_file)) + '.json', 'w')
-        json_file_out.write(json.dumps(breweries_infos, separators=(",\n ", ": "), indent=2))
+        json_file_out.write(json.dumps(breweries_infos, separators=(",\n ", ": "), indent=2, ensure_ascii=False))
         print("Ecriture du fichier")
         breweries_infos = []
     words = ""
 
-json_file_out = open('brewer' + str(i / brewers_per_file) + '.json', 'w')
+json_file_out = open('brewer' + str(int(i / brewers_per_file + 1)) + '.json', 'w')
 json_file_out.write(json.dumps(breweries_infos, separators=(",\n ", ": "), indent=2))
 #print(json.dumps(parser.dump, separators=(",\n ", ": ")))
