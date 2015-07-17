@@ -36,6 +36,10 @@ class MyHTMLParserCountry(HTMLParser):
 
     def handle_data(self, data):
         if self.__table:
+            if data.find("Out of Business") >= 0:
+                self.__table = False
+                self.dump.pop()
+
             # print("Encountered some data  :", data)
             pass
 

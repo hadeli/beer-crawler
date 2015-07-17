@@ -1,0 +1,7 @@
+language: python
+python:
+  - "3.4"
+scrpit:
+  - cd pycrawl
+  - python HTMLParserCountry.py
+  - python HTMLParserBrewer.py

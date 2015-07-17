@@ -19,14 +19,14 @@ decoder = {ACCENT_AIGU: "é",
            E_CIRCONFLEXE: "ê"}
 
 class MyHTMLParserBrewer(HTMLParser):
-    def __init__(self):
+    def __init__(self, url=None):
         super().__init__()
         self.__table = False
         self.__data = ""
         self.list_to_dump_itemprop = ["streetAddress", "addressLocality", "addressCountry", "postalCode", "name",
                                       "telephone"]
         self.list_to_dump_links = ["Web:", "Facebook", "Twitter"]
-        self.dump = {}
+        self.dump = {"url": url}
 
     def handle_starttag(self, tag, attrs):
         if "span" == tag:
@@ -66,6 +66,7 @@ json_file_out = open('brewer.json', 'w')
 json_file_in = open("breweries-fr.json")
 breweries_list = json.loads(json_file_in.read())
 breweries_infos = []
+brewers_per_file = 10
 i = 0
 n = len(breweries_list)
 for brewer in breweries_list:
@@ -78,10 +79,20 @@ for brewer in breweries_list:
             microbrewery = True
         words += str_tmp_decoded
     if microbrewery:
-        parser = MyHTMLParserBrewer()
+        parser = MyHTMLParserBrewer(brewer)
         parser.feed(words)
         breweries_infos.append(parser.dump)
         i += 1
-        print("Brasserie ", i, "/", n, ". Microbrasserie : ", microbrewery)
+        print("Brasserie ", i, "/", n, ". Brasserie : ", parser.dump["name"])
+        del parser
+    if i > 1 and i % brewers_per_file == 0:
+        num_file = i / brewers_per_file
+        json_file_out = open('brewer' + str(int(num_file)) + '.json', 'w')
+        json_file_out.write(json.dumps(breweries_infos, separators=(",\n ", ": "), indent=2))
+        print("Ecriture du fichier")
+        breweries_infos = []
+    words = ""
+
+json_file_out = open('brewer' + str(i / brewers_per_file) + '.json', 'w')
 json_file_out.write(json.dumps(breweries_infos, separators=(",\n ", ": "), indent=2))
 #print(json.dumps(parser.dump, separators=(",\n ", ": ")))
