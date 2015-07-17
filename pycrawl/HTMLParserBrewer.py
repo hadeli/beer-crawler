@@ -20,6 +20,7 @@ decoder = {ACCENT_AIGU: "é",
            A_ACCENTUE: "à",
            E_CIRCONFLEXE: "ê"}
 
+
 class MyHTMLParserBrewer(HTMLParser):
     def __init__(self, url=None):
         super().__init__()
@@ -39,14 +40,11 @@ class MyHTMLParserBrewer(HTMLParser):
             # if "itemprop" in att:
             #     print("itemprop", tag, attrs)
             for itemprop in self.list_to_dump_itemprop:
-
                 if "itemprop" in att and itemprop in att:
-                    #print(itemprop)
                     self.__data = itemprop
 
     def handle_endtag(self, tag):
         if self.__table and tag == "table":
-            #print("Encountered an end tag :", tag)
             self.__table = False
         pass
 
@@ -60,14 +58,13 @@ class MyHTMLParserBrewer(HTMLParser):
                 # print("La chaine ", key, " dans la ", data, "a été trouvé ", data.find(key))
                 data = data.replace(key, decoder[key])
             self.dump[self.__data] = data
-            #print(data)
             self.__data = ""
             pass
         for tag_link in self.list_to_dump_links:
             if tag_link in data:
                 self.__data = tag_link
 
-json_file_out = open('brewer.json', 'w')
+
 json_file_in = open("breweries-fr.json")
 breweries_list = json.loads(json_file_in.read())
 breweries_infos = []
@@ -75,7 +72,6 @@ brewers_per_file = 50
 i = 0
 n = len(breweries_list)
 for brewer in breweries_list:
-    # print(brewer)
     microbrewery = False
     words = ""
     for word in urllib.request.urlopen(brewer).readlines():
@@ -90,7 +86,6 @@ for brewer in breweries_list:
         breweries_infos.append(parser.dump)
         i += 1
         print("Brasserie ", i, "/", n, ". Brasserie : ", parser.dump["name"])
-        del parser
     if i > 1 and i % brewers_per_file == 0:
         num_file = i / brewers_per_file
         json_file_out = open('brewer' + str(int(num_file)) + '.json', 'w')
@@ -99,5 +94,4 @@ for brewer in breweries_list:
         breweries_infos = []
 
 json_file_out = open('brewer' + str(int(i / brewers_per_file + 1)) + '.json', 'w')
-json_file_out.write(json.dumps(breweries_infos, separators=(",\n ", ": "), indent=2))
-#print(json.dumps(parser.dump, separators=(",\n ", ": ")))
+json_file_out.write(json.dumps(breweries_infos, separators=(",\n ", ": "), indent=2, ensure_ascii=False))
