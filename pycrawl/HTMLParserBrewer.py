@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 import sys
 
 __author__ = 'Eliesse HADJEM'
@@ -28,6 +29,7 @@ class MyHTMLParserBrewer(HTMLParser):
                                       "telephone"]
         self.list_to_dump_links = ["Web:", "Facebook", "Twitter"]
         self.dump = {"url": url}
+        self.reg_ex = re.compile(r'[-a-z0-9._]+@([-a-z0-9]+)(\.[-a-z0-9]+)+', re.IGNORECASE)
 
     def handle_starttag(self, tag, attrs):
         if "span" == tag:
@@ -49,6 +51,10 @@ class MyHTMLParserBrewer(HTMLParser):
         pass
 
     def handle_data(self, data):
+        email = self.reg_ex.search(data)
+        if email is not None:
+            # print(email.string)
+            self.dump["email"] = email.string
         if len(self.__data) > 0:
             for key in decoder:
                 # print("La chaine ", key, " dans la ", data, "a été trouvé ", data.find(key))
