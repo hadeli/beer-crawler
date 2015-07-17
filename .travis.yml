@@ -1,8 +1,8 @@
 language: python
 python:
   - "3.4"
-install: noscript
-scrpit:
+install:
   - cd pycrawl
+scrpit:
   - python HTMLParserCountry.py
   - python HTMLParserBrewer.py
